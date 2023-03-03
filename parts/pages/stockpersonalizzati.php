@@ -39,9 +39,9 @@ $flotta = tellMeFlottaSede($sede);
         <?
         } else { ?>
           <h2>DRIVALIA</h2>
-          <a class="tastone" href="exdrivalia.php?sede=<? echo $sede; ?>" target="_blank">INVENTARIO STOCK</a><br><br>
-          <a class="tastone" href="exdrivalia.1.php?sede=<? echo $sede; ?>" target="_blank">USATO IN ENTRATA</a><br><br>
-          <a class="tastone" href="exdrivalia.2.php?sede=<? echo $sede; ?>" target="_blank">USATO IN USCITA</a><br><br>
+          <a class="tastone" href="exdrivalia.php?sede=<? echo $sede; ?>&like=DRIVALIA" target="_blank">INVENTARIO STOCK</a><br><br>
+          <a class="tastone" href="exdrivalia.1.php?sede=<? echo $sede; ?>&like=DRIVALIA" target="_blank">USATO IN ENTRATA</a><br><br>
+          <a class="tastone" href="exdrivalia.2.php?sede=<? echo $sede; ?>&like=DRIVALIA" target="_blank">USATO IN USCITA</a><br><br>
         <?
         } ?>
       </div>

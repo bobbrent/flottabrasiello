@@ -483,6 +483,14 @@ function tellMeMacchineSedeLike($sede, $like){
   return $ris;
 }
 
+function tellMeVettore($idmacchina){
+  $db = new dbObj();
+  $connString =  $db->getConnstring();
+  $cec =  mysqli_query($connString, "SELECT vettori FROM `bolla` where id_veicoli like '%\"$idmacchina\"%';") or die("database error:". mysqli_error($connString));
+  $ris = mysqli_fetch_all($cec);
+  return $ris;
+}
+
 function tellMeMacchineSedeData($sede, $data, $cosa){
   $time = strtotime("-2 year", time());
   $anno = date("Y", $time);
