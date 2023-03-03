@@ -334,7 +334,7 @@ foreach($macchine as $v){
 }
 
 //FILTRI COLONNE
-$spreadsheet->getActiveSheet()->setAutoFilter('A1:L1');
+$spreadsheet->getActiveSheet()->setAutoFilter('A1:O1');
 
 //INTESTAZIONE
 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(30);
