@@ -338,7 +338,7 @@ $spreadsheet->getActiveSheet()->setAutoFilter('A1:O1');
 
 //INTESTAZIONE
 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(30);
-$spreadsheet->getActiveSheet()->getStyle('A1:L1')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED);
+$spreadsheet->getActiveSheet()->getStyle('A1:O1')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED);
 //NOME FOGLIO
 $spreadsheet->getActiveSheet()->setTitle("STOCK");
 
