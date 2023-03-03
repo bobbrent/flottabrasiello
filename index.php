@@ -12,7 +12,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Roberto Lombardi">
-  <title>Brasiello  |  Logins</title>
+  <title>Brasiello  |  Login</title>
   <link href="img/favicon.png" rel="icon">
   <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
   <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
