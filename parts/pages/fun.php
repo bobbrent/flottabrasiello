@@ -486,9 +486,14 @@ function tellMeMacchineSedeLike($sede, $like){
 function tellMeVettore($idmacchina){
   $db = new dbObj();
   $connString =  $db->getConnstring();
-  $cec =  mysqli_query($connString, "SELECT vettori FROM `bolla` where id_veicoli like '%\"$idmacchina\"%';") or die("database error:". mysqli_error($connString));
+  $cec =  mysqli_query($connString, "SELECT id, vettori FROM `bolla` where id_veicoli like '%\"$idmacchina\"%' order by id desc;") or die("database error:". mysqli_error($connString));
   $ris = mysqli_fetch_all($cec);
-  return $ris;
+
+  if(mysqli_num_rows($cec) > 0){
+    return $ris[0];
+  }else{
+    return "";
+  }
 }
 
 function tellMeMacchineSedeData($sede, $data, $cosa){
