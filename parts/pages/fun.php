@@ -490,7 +490,7 @@ function tellMeVettore($idmacchina){
   $ris = mysqli_fetch_all($cec);
 
   if(mysqli_num_rows($cec) > 0){
-    return $ris[0];
+    return $ris[0][1];
   }else{
     return "";
   }
