@@ -1,5 +1,4 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'].'/functions/db.php');
 function filesize_formatted($size) {
   $units = array( 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
   $power = $size > 0 ? floor(log($size, 1024)) : 0;
