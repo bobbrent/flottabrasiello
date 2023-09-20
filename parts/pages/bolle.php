@@ -1,5 +1,6 @@
 <?php
 include 'fun.php';
+include 'funbolle.php';
 $pagina = 'bolle';
 if (isset($dati['ricerca'])) {
   $filter = filtra_stringa($dati['ricerca']);
@@ -34,7 +35,7 @@ if (isset($dati['ricerca'])) {
   } else {
     $pagina_iniziale = true;
     $paginator = 10;
-    $offset = 1;
+    $offset = 0;
     $limit = ' ORDER BY `data_bolla` DESC LIMIT ' . $offset . ', ' . $paginator;
   }
   if ($dati['who'] == 'admin') {
@@ -273,17 +274,30 @@ $ultima_bolla = 0;
                 <th>DESTINAZIONE</th>
                 <th>VETTORE</th>
                 <th>NOTE</th>
+                <th>FILES</th>
               </tr>
             </thead>
             <tbody>
               <?
               foreach ($bolle as $v) {
-                $stringa = "<tr><td><a target='_blank' href='pdfbolla.php?bolla=%d'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>";
+                $filebolla = cercafileperbolla($v[0]);
+                if($filebolla){
+                  $stringafile = "<a href='/uploadbolle/download.php?id=".$filebolla[0]."'>Download</a>";
+                }else{
+                  $stringafile = " <button onclick='inviafile(%s)' class='pulsantecarica'>
+                  Carica 
+                </button>";
+                }
+                $stringa = "<tr><td><a target='_blank' href='pdfbolla.php?bolla=%d'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>
+                  <td>
+                    $stringafile
+                  </td>
+                </tr>";
                 $destinatario = json_decode($v[5]);
                 $destinazione = json_decode($v[6]);
 
                 $desti = $destinatario[0] . " | Via " . $destinazione[0] . " n " . $destinazione[1] . ", (" . $destinazione[2] . ") " . $destinazione[3];
-                printf($stringa, $v[0], $v[1], formattaDataLogin($v[2]), $desti, $v[8], $v[9]);
+                printf($stringa, $v[0], $v[1], formattaDataLogin($v[2]), $desti, $v[8], $v[9], $v[0]);
                 // $ultima_bolla = $v[0];
               }
               ?>
@@ -323,6 +337,117 @@ $ultima_bolla = 0;
     </div>
   </div>
 </section>
+
+<modal class="modalecaricamento">
+  <p class="chiudimodale" onclick="chiudimodale();"></p>
+  <h4 class="titolomodale">
+    Carica il file collegandolo alla bolla
+  </h4>
+  <div class="partecentralemodale">
+    <div class="file-upload__wrapper">
+        <div class="form-parent">
+          <form action="#" class="file-upload__form">
+            <input type="hidden" name="numerobolla" id="numerobolla" value="">
+            <input class="file-input" type="file" name="file" />
+          </form>
+          <button class="pulsantecarica" onclick="caricafile();">Invia</button>  
+        </div>
+      </div>
+  </div>
+</modal>
+<style>
+
+  .titolomodale{
+    position: absolute;
+    width: 91%;
+    text-align: center;
+    color: black;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+  .partecentralemodale{
+    height: calc(100% - 68px);
+    width: 98%;
+    border-bottom-right-radius: 17px;
+    border-bottom-left-radius: 17px;
+    margin: 59px auto;
+  }
+  .modalecaricamento{
+    display: none;
+    opacity: 0;
+    background: white;
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    top: 12%;
+    left: 20%;
+    border: 1px solid;
+    border-radius: 17px;
+    box-shadow: 6px 6px 8px 0px rgba(0,0,0,0.4);
+    transition: opacity .5s;
+  }
+
+  .modaleblock{
+    display: block;
+  }
+
+  .modaleopaca{
+    opacity: 1;
+  }
+
+  .chiudimodale:after{
+    display: inline-block;
+    content: "\00d7"; 
+    position: absolute;
+    right: 0;
+    padding: 0px 14px;
+    border: 1px solid;
+    border-top-right-radius: 16px;
+    box-shadow: -2px 1px 5px 1px;
+    font-size: 40px;
+    font-weight: 900;
+  }
+
+  .chiudimodale{
+    cursor: pointer;
+  }
+  .pulsantecarica{
+    background: #22242a;
+    color: white;
+    text-transform: uppercase;
+    border: none;
+    padding: 10px;
+    border-radius: 7px;
+  }
+
+  .pulsantecarica:active {
+    background-color: lightgray;
+    border-radius: 3px;
+    box-shadow: 2px 2px 4px 1px #22242a;
+  }
+
+  /*! CSS Used from: Embedded ; media=all */
+@media all{
+.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;line-height:1;}
+.fa-cloud-upload-alt:before{content:"\f382";}
+.fa-file-alt:before{content:"\f15c";}
+.fas{font-family:"Font Awesome 5 Free";}
+.fas{font-weight:900;}
+}
+/*! CSS Used from: http://localhost/upp/main.css */
+.file-upload__wrapper{width:100%;height: 100%; background:#fff;border-radius:5px;padding:35px;box-shadow:6px 6px 12px rgba(0, 0, 0, 0.05);}
+.file-upload__wrapper header{color:#cb67e9;font-size:2rem;text-align:center;margin-bottom:20px;}
+.form-parent{display:flex;align-items:center;justify-content:center;}
+.file-upload__wrapper form.file-upload__form{height:100%;width: 100%; cursor:pointer;margin:30px 0;display:flex;align-items:center;flex-direction:column;justify-content:center;border-radius:6px;padding:10px;}
+form.file-upload__form :where(i, p){color:#cb67e9;}
+form.file-upload__form i{font-size:50px;}
+form.file-upload__form p{font-size:1rem;margin-top:15px;}
+.uploaded-container{overflow-y:scroll;max-height:230px;}
+.uploaded-container .row .content-wrapper{display:flex;align-items:center;}
+.uploaded-container .row .details-wrapper{display:flex;flex-direction:column;margin-left:15px;}
+.uploaded-container .row .details-wrapper .name span{color:green;font-size:10px;}
+.uploaded-container .row .details-wrapper .file-size{color:#404040;font-size:11px;}
+</style>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -394,5 +519,74 @@ $ultima_bolla = 0;
       }
       ?>
     }
+  }
+
+  const uploadForm = document.querySelector(".file-upload__form"),
+  fileInput = document.querySelector(".file-input");
+  // uploadForm.addEventListener("click", () => {
+  //   fileInput.click();
+  // });
+
+  fileInput.onchange = ({ target }) => {
+    let file = target.files[0];
+    if (file) {
+      let fileName = file.name;
+      if (fileName.length >= 12) {
+        let splitName = fileName.split(".");
+        fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+      }
+      console.log(fileName);
+    }
+  };
+  function inviafile(id){
+    let modale = document.getElementsByClassName('modalecaricamento')[0];
+    modale.classList.toggle('modaleblock');
+    document.getElementById('numerobolla').value = id;
+    setTimeout(()=>{
+      modale.classList.toggle('modaleopaca');
+    },50)
+  }
+
+  function chiudimodale(){
+    let modale = document.getElementsByClassName('modalecaricamento')[0];
+    modale.classList.toggle('modaleopaca');
+    setTimeout(()=>{
+      modale.classList.toggle('modaleblock');
+    },550)
+  }
+
+  function caricafile(){
+    let xhrRequest = new XMLHttpRequest();
+    const endpoint = "/uploadbolle/upload.php";
+    xhrRequest.onreadystatechange = function() {
+      if (xhrRequest.readyState == XMLHttpRequest.DONE) {
+        let risposta = JSON.parse(xhrRequest.responseText);
+        if(risposta[0] === 'errore'){
+          alert('Errore: ' + risposta[1]);
+        }else{
+          alert(risposta[1]);
+          setTimeout(() => {
+            chiudimodale();
+          }, 50);
+          setTimeout(() => {
+            <?php
+						if(isset($_SESSION['is_admin'])){
+							?>
+								rldescend({ 'fxf': 'full', 'c1': 'bolle', 'pag': 'bolle', 'who':'admin'});clearR();
+							<?php
+						}else if(isset($sede[0])){	
+							$sede_competenza = 	$sede[0];			
+							?>
+								rldescend({ 'fxf': 'full', 'c1': 'bolle', 'pag': 'bolle', 'who':'utente', 'sede' : '<?php echo $sede_competenza;?>'});clearR();
+							<?php
+						}
+					?>
+          }, 70);
+        }
+      }
+    }
+    xhrRequest.open("POST", endpoint);
+    let data = new FormData(uploadForm);
+    xhrRequest.send(data);
   }
 </script>
