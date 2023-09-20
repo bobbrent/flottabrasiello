@@ -560,6 +560,7 @@ form.file-upload__form p{font-size:1rem;margin-top:15px;}
     const endpoint = "/uploadbolle/upload.php";
     xhrRequest.onreadystatechange = function() {
       if (xhrRequest.readyState == XMLHttpRequest.DONE) {
+        console.log(xhrRequest.responseText);
         let risposta = JSON.parse(xhrRequest.responseText);
         if(risposta[0] === 'errore'){
           alert('Errore: ' + risposta[1]);
