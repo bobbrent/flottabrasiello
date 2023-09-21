@@ -311,7 +311,7 @@ if (isset($filter)) {
   foreach ($bolle as $v) {
       $filebolla = cercafileperbolla($v[0]);
       if($filebolla) {
-          $stringafile = "<a target='__blank' href='/uploads/".$filebolla[2]."'>Download</a>
+          $stringafile = "<a class='fileEsiste scarica' target='__blank' href='/uploads/".$filebolla[2]."'>Download</a>
           <a class='fileEsiste elimina' href='#' onclick='cancellaFile(".$filebolla[0].");'>Cancella</a>";
           // print_r($filebolla);
       } else {
