@@ -284,7 +284,8 @@ if (isset($filter)) {
   foreach ($bolle as $v) {
       $filebolla = cercafileperbolla($v[0]);
       if($filebolla) {
-          $stringafile = "<a target='__blank' href='/flottabrasiello/uploads/".$filebolla[2]."'>Download</a>";
+          $stringafile = "<a target='__blank' href='/uploads/".$filebolla[2]."'>Download</a>";
+          print_r($filebolla);
       } else {
           $stringafile = " <button onclick='inviafile(%s)' class='pulsantecarica'>
                   Carica 
