@@ -622,6 +622,7 @@ if (isset($filter)) {
     }
   }
 
+
   const uploadForm = document.querySelector(".file-upload__form"),
     fileInput = document.querySelector(".file-input");
   // uploadForm.addEventListener("click", () => {
