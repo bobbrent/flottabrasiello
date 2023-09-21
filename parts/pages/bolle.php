@@ -242,6 +242,33 @@ $ultima_bolla = 0;
   tr:hover {
     background: rgba(200, 200, 200, 0.4)
   }
+
+  .fileEsiste {
+    padding: 7px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+    border-radius: 7px;
+    max-width: 89px;
+    margin-bottom: 7px;
+  }
+
+  .scarica {
+    background-color: green;
+  }
+
+  .elimina {
+    background-color: red;
+  }
+
+  .fileEsiste:hover,
+  .fileEsiste:focus {
+    color: white;
+    background-color: rgba(0, 0, 0, .4);
+    box-shadow: 3px 3px 15px -1px rgba(0, 0, 0, 0.6);
+  }
 </style>
 <section class="wrapper site-min-height">
   <div class="row mb">
@@ -284,7 +311,8 @@ if (isset($filter)) {
   foreach ($bolle as $v) {
       $filebolla = cercafileperbolla($v[0]);
       if($filebolla) {
-          $stringafile = "<a target='__blank' href='/uploads/".$filebolla[2]."'>Download</a>";
+          $stringafile = "<a target='__blank' href='/uploads/".$filebolla[2]."'>Download</a>
+          <a class='fileEsiste elimina' href='#' onclick='cancellaFile(".$filebolla[0].");'>Cancella</a>";
           // print_r($filebolla);
       } else {
           $stringafile = " <button onclick='inviafile(%s)' class='pulsantecarica'>
@@ -707,5 +735,49 @@ if (isset($filter)) {
     xhrRequest.open("POST", endpoint);
     let data = new FormData(uploadForm);
     xhrRequest.send(data);
+  }
+
+  function cancellaFile(id) {
+    let xhrRequest = new XMLHttpRequest();
+    const endpoint = "/uploadbolle/elimina.php?id=" + id.toString();
+    xhrRequest.onreadystatechange = function() {
+      if (xhrRequest.readyState == XMLHttpRequest.DONE) {
+        let risposta = JSON.parse(xhrRequest.responseText);
+        if (risposta[0] === 'errore') {
+          alert('Errore: ' + risposta[1]);
+        } else {
+          alert(risposta[1]);
+          setTimeout(() => {
+            <?php
+                  if(isset($_SESSION['is_admin'])) {
+                      ?>
+            rldescend({
+              'fxf': 'full',
+              'c1': 'bolle',
+              'pag': 'bolle',
+              'who': 'admin'
+            });
+            clearR();
+            <?php
+                  } elseif(isset($sede[0])) {
+                      $sede_competenza = 	$sede[0];
+                      ?>
+            rldescend({
+              'fxf': 'full',
+              'c1': 'bolle',
+              'pag': 'bolle',
+              'who': 'utente',
+              'sede': '<?php echo $sede_competenza;?>'
+            });
+            clearR();
+            <?php
+                  }
+?>
+          }, 70);
+        }
+      }
+    }
+    xhrRequest.open("GET", endpoint);
+    xhrRequest.send()
   }
 </script>

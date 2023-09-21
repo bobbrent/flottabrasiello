@@ -25,3 +25,22 @@ function cercafileperbolla($id)
         return false;
     }
 }
+
+function cercafileperid($id)
+{
+    // $dbConn = mysqli_connect('localhost', 'root', '', 'brasiello_fleet') or die('MySQL connect failed. ' . mysqli_connect_error());
+    $db = new dbObj();
+    $connString =  $db->getConnstring();
+    $sql = "select id,nome_file,nuovo_nome from file_bolle where id = $id";
+    
+    $result = mysqli_query($connString, $sql) or die(mysqli_error($connString));
+
+    while ($row = $result->fetch_row()) {
+        $risultato = $row;
+    }
+    if(isset($risultato)) {
+        return $risultato;
+    } else {
+        return false;
+    }
+}
