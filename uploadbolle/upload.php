@@ -17,14 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // $db = new dbObj();
                     // $connString =  $db->getConnstring();
       
-                    $sql = "insert into file_bolle(`id_bolla`, `nome_file`, `content`, `grandezza`, `tipo`, `data`) values(
-                            ".$_POST['numerobolla'].",
-                            '".$value['name']."',
-                            '".mysqli_escape_string($dbConn, file_get_contents($value['tmp_name']))."', 
-                            '".filesize_formatted($value['size'])."', 
-                            '".$value['type']."', 
-                            '".date('Y-m-d H:i:s')."'
-                            )";
+                    $sql = " insert into file_bolle(`id_bolla`, `nome_file`, `nuovo_nome`, `grandezza`, `tipo`, `data`) values(
+                      ".$_POST['numerobolla'].",
+                      '".$value['name']."',
+                      '".$newname."', 
+                      '".filesize_formatted($value['size'])."', 
+                      '".$value['type']."', 
+                      '".date('Y-m-d H:i:s')."'
+                      )";
       
                     $result = mysqli_query($dbConn, $sql) or die(mysqli_error($dbConn));
       

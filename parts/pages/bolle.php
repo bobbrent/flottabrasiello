@@ -285,7 +285,7 @@ if (isset($filter)) {
       $filebolla = cercafileperbolla($v[0]);
       if($filebolla) {
           $stringafile = "<a target='__blank' href='/uploads/".$filebolla[2]."'>Download</a>";
-          print_r($filebolla);
+          // print_r($filebolla);
       } else {
           $stringafile = " <button onclick='inviafile(%s)' class='pulsantecarica'>
                   Carica 
