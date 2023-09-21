@@ -28,12 +28,11 @@ function cercafileperbolla($id)
 
 function cercafileperid($id)
 {
-    // $dbConn = mysqli_connect('localhost', 'root', '', 'brasiello_fleet') or die('MySQL connect failed. ' . mysqli_connect_error());
-    $db = new dbObj();
-    $connString =  $db->getConnstring();
-    $sql = "select id,nome_file,nuovo_nome from file_bolle where id = $id";
-    
-    $result = mysqli_query($connString, $sql) or die(mysqli_error($connString));
+    $dbConn = mysqli_connect('localhost', 'flotta_brasiello', '%Kp3l8%%Kp3l8s13p3l8s13', 'brasiello_fleet') or die('MySQL connect failed. ' . mysqli_connect_error());
+    $sql = "
+  select id,nome_file,nuovo_nome from file_bolle where id = $id";
+  
+    $result = mysqli_query($dbConn, $sql) or die(mysqli_error($dbConn));
 
     while ($row = $result->fetch_row()) {
         $risultato = $row;
